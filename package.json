@@ -10,7 +10,10 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-core": "^6.26.0",
     "babel-eslint": "^8.0.2",
+    "babel-preset-node6-es6": "^11.2.5",
     "eslint": "^4.12.0",
     "puppeteer": "^0.13.0"
   }

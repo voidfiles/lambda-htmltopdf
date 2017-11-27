@@ -1,12 +1,34 @@
 const puppeteer = require('puppeteer');
-console.log("yoyoyoyoy");
-console.log(puppeteer);
-(async () => {
+
+async function getPageForURL(browser, url) {
+  const page = await browser.newPage();
+  await page.goto(url);
+  return page;
+};
+
+async function getPageForHTML(browser, html) {
+  const page = await browser.newPage();
+  await page.goto(url);
+  return page;
+};
+
+async function generatePDFFromPage(page) {
+  await page.pdf({path: 'stamp.pdf', format: 'A4'});
+};
+
+(async function (conf) {
   const browser = await puppeteer.launch({
     args: ['--no-sandbox', '--disable-setuid-sandbox']
   });
-  const page = await browser.newPage();
-  await page.goto('https://api.bepress.com/cover-page/aaron_edlin/90/');
+
+  let page;
+  if (conf.url) {
+    page = await getPageForURL(conf.url);
+  } else {
+    page = await getPageForHTML(conf.html)
+  }
+
+
   await page.pdf({path: 'stamp.pdf', format: 'A4'});
   await browser.close();
 })();
