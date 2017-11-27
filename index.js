@@ -13,14 +13,23 @@ async function getPageForHTML(browser, html) {
 };
 
 async function generatePDFFromPage(page) {
-  await page.pdf({path: 'stamp.pdf', format: 'A4'});
+  return await page.pdf({format: 'A4'});
 };
 
-(async function (conf) {
-  const browser = await puppeteer.launch({
-    args: ['--no-sandbox', '--disable-setuid-sandbox']
-  });
+let browser;
 
+async function getBrowser() {
+  if (!browser) {
+    browser = await puppeteer.launch({
+      args: ['--no-sandbox', '--disable-setuid-sandbox']
+    });
+  }
+
+  return browser;
+}
+
+export async function generatePDF(conf) {
+  let browser = await getBrowser();
   let page;
   if (conf.url) {
     page = await getPageForURL(conf.url);
@@ -28,7 +37,5 @@ async function generatePDFFromPage(page) {
     page = await getPageForHTML(conf.html)
   }
 
-
-  await page.pdf({path: 'stamp.pdf', format: 'A4'});
-  await browser.close();
-})();
+  return await generatePDFFromPage(page);
+}

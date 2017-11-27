@@ -7,3 +7,20 @@ jobs:
        - checkout
        - run: make install
        - run: make lint
+       - run: make tests
+   deploy:
+     docker:
+       - image: circleci/node:8
+     steps:
+       - checkout
+       - run: make install_production
+       - run: make artifact
+       - run: make upload
+workflows:
+  version: 2
+  test_and_deploy:
+    jobs:
+      - build
+      - deploy:
+          requires:
+            - build

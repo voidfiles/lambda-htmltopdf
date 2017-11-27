@@ -21,6 +21,9 @@ download_chrome:
 install:
 	yarn install
 
+install_production:
+	yarn install --production
+
 init: install
 	echo "Setting pre-push hook..."
 	(cd .git/hooks && ln -sf ../../misc/pre-push.sh pre-push)
@@ -44,3 +47,6 @@ artifact:
 upload:
 	aws s3 cp $(ARTIFACT_DIR)/$(ARTIFACT_NAME) s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip
 	aws s3 cp s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip s3://$(ARTIFACT_BUCKET)/$(PROJECT)/production/$(PROJECT).tar.gz
+
+tests: compile
+	yarn run test
