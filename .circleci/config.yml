@@ -6,6 +6,7 @@ jobs:
      working_directory: ~/repo
      steps:
        - checkout
+       - apt-get install libx11-xcb1
        - restore_cache:
            keys:
              - npm-dev-cache-{{ checksum "yarn.lock" }}
