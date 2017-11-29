@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "mocha --require babel-core/register",
+    "test": "nyc --check-coverage --lines 85 --functions 85 --branches 85 mocha --require babel-core/register",
     "run": "node index.js"
   },
   "author": "",
@@ -20,6 +20,7 @@
     "babel-register": "^6.26.0",
     "eslint": "^4.12.0",
     "mocha": "^4.0.1",
+    "nyc": "^11.3.0",
     "rewire": "^3.0.2"
   }
 }

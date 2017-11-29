@@ -3,3 +3,4 @@ _cache
 vendor
 build.js
 artifact
+.nyc_output
