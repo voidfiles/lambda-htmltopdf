@@ -48,7 +48,7 @@ clean:
 	rm -fR $(CACHE_DIR)
 	rm -fR $(VENDOR_DIR)
 
-compile:
+build:
 	mkdir -p $(CACHE_DIR)
 	node_modules/.bin/babel lib/index.js > $(CACHE_DIR)/index.js
 
@@ -61,5 +61,5 @@ upload:
 	aws s3 cp $(ARTIFACT_DIR)/$(ARTIFACT_NAME) s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip
 	aws s3 cp s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip s3://$(ARTIFACT_BUCKET)/$(PROJECT)/production/$(PROJECT).tar.gz
 
-tests: compile
+tests: build
 	yarn run test
