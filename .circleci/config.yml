@@ -6,7 +6,7 @@ jobs:
      working_directory: ~/repo
      steps:
        - checkout
-       - run: sudo apt-get install libxcomposite1
+       - run: sudo apt-get install libxcomposite1 libxcursor1
        - restore_cache:
            keys:
              - npm-dev-cache-{{ checksum "yarn.lock" }}
