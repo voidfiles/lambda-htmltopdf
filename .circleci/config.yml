@@ -29,7 +29,10 @@ jobs:
            keys:
              - npm-cache-{{ checksum "yarn.lock" }}
              - npm-cache-
+       - run: make install
+       - run: make build
        - run: make install_production
+       - run: make download_chrome
        - run: make artifact
        - run: sudo apt-get install awscli
        - run: make upload
