@@ -12,6 +12,7 @@ jobs:
              - npm-dev-cache-
        - run: make install
        - run: make lint
+       - run: make install_chrome
        - run: make tests
        - save_cache:
            key: npm-dev-cache-{{ checksum "yarn.lock" }}

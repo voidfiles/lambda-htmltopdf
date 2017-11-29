@@ -23,7 +23,7 @@ install_chrome:
 	# This will trigger a download of chrome
 	node lib/cli.js
 
-install: install_chrome
+install:
 	yarn install
 
 install_production:
