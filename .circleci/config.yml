@@ -31,6 +31,7 @@ jobs:
              - npm-cache-
        - run: make install_production
        - run: make artifact
+       - run: sudo apt-get install awscli
        - run: make upload
        - save_cache:
            key: npm-cache-{{ checksum "yarn.lock" }}

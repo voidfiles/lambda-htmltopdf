@@ -54,6 +54,7 @@ compile:
 
 artifact:
 	mkdir -p $(ARTIFACT_DIR)
+	rm -fR node_modules/puppeteer/.local-chromium
 	zip -rv $(ARTIFACT_DIR)/$(ARTIFACT_NAME) node_modules vendor $(CACHE_DIR)/index.js
 
 upload:
