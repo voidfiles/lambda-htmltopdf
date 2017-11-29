@@ -1,5 +1,7 @@
 node_modules
 _cache
+_build
+_artifact
 vendor
 build.js
 artifact

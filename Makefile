@@ -2,7 +2,8 @@ PROJECT =htmltopdf
 PROJECT_DIR =$(shell pwd)
 CACHE_DIR =$(PROJECT_DIR)/_cache
 VENDOR_DIR =$(PROJECT_DIR)/vendor
-ARTIFACT_DIR =$(PROJECT_DIR)/artifact
+ARTIFACT_DIR =$(PROJECT_DIR)/_artifact
+BUILD_DIR =$(PROJECT_DIR)/_build
 GITHASH :=$(shell git rev-parse --short HEAD)
 BUILDDATE :=$(shell date -u +%Y%m%d%H%M)
 CHROME_HEADLESS_FILENAME :=stable-headless-chromium-amazonlinux-2017-03.zip
@@ -53,13 +54,18 @@ build:
 	node_modules/.bin/babel lib/index.js > $(CACHE_DIR)/index.js
 
 artifact:
+	rm -fR $(BUILD_DIR)
+	mkdir -p $(BUILD_DIR)
 	mkdir -p $(ARTIFACT_DIR)
-	rm -fR node_modules/puppeteer/.local-chromium
-	zip -rv $(ARTIFACT_DIR)/$(ARTIFACT_NAME) node_modules vendor $(CACHE_DIR)/index.js
+	cp -fR node_modules $(BUILD_DIR)/
+	cp -fR vendor $(BUILD_DIR)/
+	cp -fR $(CACHE_DIR)/index.js $(BUILD_DIR)/
+	rm -fR $(BUILD_DIR)/node_modules/puppeteer/.local-chromium
+	(cd $(BUILD_DIR) && zip -rv $(ARTIFACT_DIR)/$(ARTIFACT_NAME) *)
 
 upload:
 	aws s3 cp $(ARTIFACT_DIR)/$(ARTIFACT_NAME) s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip
-	aws s3 cp s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip s3://$(ARTIFACT_BUCKET)/$(PROJECT)/production/$(PROJECT).tar.gz
+	aws s3 cp s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip s3://$(ARTIFACT_BUCKET)/$(PROJECT)/production/$(PROJECT).zip
 
 tests: build
 	yarn run test
