@@ -5,17 +5,33 @@ jobs:
        - image: circleci/node:8
      steps:
        - checkout
+       - restore_cache:
+           keys:
+             - npm-dev-cache-{{ checksum "yarn.lock" }}
+             - npm-dev-cache-
        - run: make install
        - run: make lint
        - run: make tests
+       - save_cache:
+           key: npm-dev-cache-{{ checksum "yarn.lock" }}
+           paths:
+             - node_modules
    deploy:
      docker:
        - image: circleci/node:8
      steps:
        - checkout
+       - restore_cache:
+           keys:
+             - npm-cache-{{ checksum "yarn.lock" }}
+             - npm-cache-
        - run: make install_production
        - run: make artifact
        - run: make upload
+       - save_cache:
+           key: npm-cache-{{ checksum "yarn.lock" }}
+           paths:
+             - node_modules
 workflows:
   version: 2
   test_and_deploy:
