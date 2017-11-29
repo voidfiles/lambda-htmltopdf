@@ -29,6 +29,12 @@ install:
 install_production:
 	yarn install --production
 
+install_debs:
+	sudo apt-get install gconf-service libasound2 libatk1.0-0 \
+	  libc6 libcups2 libdbus-1-3 libgconf-2-4 libgtk-3-0 libnspr4 \
+		libxcomposite1 libxcursor1 libxi6 libxrandr2 libxss1 libxtst6 \
+		fonts-liberation libappindicator1 libnss3 lsb-release xdg-utils wget
+
 init: install
 	echo "Setting pre-push hook..."
 	(cd .git/hooks && ln -sf ../../misc/pre-push.sh pre-push)

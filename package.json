@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "nyc --check-coverage --lines 85 --functions 85 --branches 85 mocha --require babel-core/register",
+    "test": "nyc --check-coverage --lines 85 --functions 85 --branches 85 mocha --require babel-core/register --timeout=10000",
     "run": "node index.js"
   },
   "author": "",
