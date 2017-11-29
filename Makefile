@@ -12,13 +12,18 @@ ARTIFACT_NAME =$(PROJECT)-$(GITHASH).zip
 .SILENT: ;  # no need for @
 
 download_chrome:
+	# This is for packaging for aws
 	mkdir -p $(CACHE_DIR)
 	mkdir -p $(VENDOR_DIR)
 	echo $(CHROME_HEADLESS_URL)
 	(cd $(CACHE_DIR) && curl -L -O $(CHROME_HEADLESS_URL))
 	(cd $(VENDOR_DIR) && unzip -o $(CACHE_DIR)/$(CHROME_HEADLESS_FILENAME))
 
-install:
+install_chrome:
+	# This will trigger a download of chrome
+	node lib/cli.js
+
+install: install_chrome
 	yarn install
 
 install_production:
