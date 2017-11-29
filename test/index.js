@@ -122,7 +122,7 @@ describe('HTMLToPDF', function() {
         return generatePDFFromPage(page);
       }).then(function (buf) {
         assert.equal(
-          buf.toString('base64').endsWith("R4cmVmCjE5NjgyCiUlRU9G"),
+          buf.toString('utf8').indexOf("<</Creator (Chromium)") > -1,
           true,
         );
       }).then(done, done)
@@ -137,7 +137,7 @@ describe('HTMLToPDF', function() {
       };
       generatePDF(conf).then(function (buf) {
         assert.equal(
-          buf.toString('base64').endsWith("R4cmVmCjE5NjgyCiUlRU9G"),
+          buf.toString('utf8').indexOf("<</Creator (Chromium)") > -1,
           true,
         );
       }).then(done, done);
