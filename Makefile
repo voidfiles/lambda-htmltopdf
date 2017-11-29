@@ -38,11 +38,12 @@ clean:
 	rm -fR $(VENDOR_DIR)
 
 compile:
-	node_modules/.bin/babel index.js > build.js
+	mkdir -p $(CACHE_DIR)
+	node_modules/.bin/babel lib/index.js > $(CACHE_DIR)/index.js
 
 artifact:
 	mkdir -p $(ARTIFACT_DIR)
-	zip -rv $(ARTIFACT_DIR)/$(ARTIFACT_NAME) node_modules vendor build.js
+	zip -rv $(ARTIFACT_DIR)/$(ARTIFACT_NAME) node_modules vendor $(CACHE_DIR)/index.js
 
 upload:
 	aws s3 cp $(ARTIFACT_DIR)/$(ARTIFACT_NAME) s3://$(ARTIFACT_BUCKET)/$(PROJECT)/release/$(GITHASH)/$(PROJECT).zip

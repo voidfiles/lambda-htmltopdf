@@ -1,6 +1,7 @@
 var assert = require('assert');
 var rewire = require("rewire");
-var htmltopdf = rewire("../build.js");
+// This is the built output of bable
+var htmltopdf = rewire("../_cache/index.js");
 var server = require('./server');
 
 let getBrowser = htmltopdf.__get__("getBrowser");
