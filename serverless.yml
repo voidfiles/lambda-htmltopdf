@@ -1,0 +1,29 @@
+service: sls
+package:
+  individually: true
+
+provider:
+  name: aws
+  runtime: nodejs6.10
+  memorySize: 2048
+
+functions:
+  hello:
+    handler: index.handler
+    package:
+      individually: true
+      artifact: _artifact/htmltopdf.zip
+    events:
+      - http:
+          path: /{proxy+}
+          method: any
+    timeout: 30
+    environment:
+      CHROME_PATH: "vendor/headless-chromium"
+      DEBUG: "puppeteer:*"
+# resources:
+#   Resources:
+#     ApiGatewayRestApi:
+#       Properties:
+#         BinaryMediaTypes:
+#           - "*/*"

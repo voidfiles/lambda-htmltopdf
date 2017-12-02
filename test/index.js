@@ -74,7 +74,9 @@ describe('HTMLToPDF', function() {
         html: "<html><body>Hello</body></html>",
       };
       getBrowser().then(function (browser) {
-        return getPageForHTML(browser, conf).then(function (page) {
+        return browser.newPage();
+      }).then(function (page) {
+        return getPageForHTML(page, conf).then(function (page) {
           return page;
         });
       }).then(function (page) {
@@ -100,7 +102,9 @@ describe('HTMLToPDF', function() {
       };
       let getBrowser = htmltopdf.__get__("getBrowser");
       getBrowser().then(function (browser) {
-        return getPageForURL(browser, conf).then(function (page) {
+        return browser.newPage();
+      }).then(function (page) {
+        return getPageForURL(page, conf).then(function (page) {
           return page;
         });
       }).then(function (page) {
@@ -117,7 +121,9 @@ describe('HTMLToPDF', function() {
         html: "<html><body>Hello</body></html>",
       };
       getBrowser().then(function (browser) {
-        return getPageForHTML(browser, conf);
+        return browser.newPage();
+      }).then(function (page) {
+        return getPageForHTML(page, conf);
       }).then(function (page) {
         return generatePDFFromPage(page);
       }).then(function (buf) {

@@ -9,16 +9,13 @@ BUILDDATE :=$(shell date -u +%Y%m%d%H%M)
 CHROME_HEADLESS_FILENAME :=stable-headless-chromium-amazonlinux-2017-03.zip
 CHROME_HEADLESS_URL :=https://github.com/adieuadieu/serverless-chrome/releases/download/v1.0.0-29/$(CHROME_HEADLESS_FILENAME)
 ARTIFACT_BUCKET :="artifacts.production.bepress.com"
-ARTIFACT_NAME =$(PROJECT)-$(GITHASH).zip
+ARTIFACT_NAME =$(PROJECT).zip
 .SILENT: ;  # no need for @
 
 download_chrome:
-	# This is for packaging for aws
-	mkdir -p $(CACHE_DIR)
-	mkdir -p $(VENDOR_DIR)
-	echo $(CHROME_HEADLESS_URL)
-	(cd $(CACHE_DIR) && curl -L -O $(CHROME_HEADLESS_URL))
-	(cd $(VENDOR_DIR) && unzip -o $(CACHE_DIR)/$(CHROME_HEADLESS_FILENAME))
+	docker run -dt --rm --name headless-chromium adieuadieu/headless-chromium-for-aws-lambda:dev
+	docker cp headless-chromium:/bin/headless-chromium $(VENDOR_DIR)/headless-chromium
+	docker stop headless-chromium
 
 install_chrome:
 	# This will trigger a download of chrome
@@ -59,8 +56,12 @@ artifact:
 	mkdir -p $(ARTIFACT_DIR)
 	cp -fR node_modules $(BUILD_DIR)/
 	cp -fR vendor $(BUILD_DIR)/
+	cp -fR package.json $(BUILD_DIR)/
+	cp -fR yarn.lock $(BUILD_DIR)/
+	(cd $(BUILD_DIR) && yarn install --production)
 	cp -fR $(CACHE_DIR)/index.js $(BUILD_DIR)/
 	rm -fR $(BUILD_DIR)/node_modules/puppeteer/.local-chromium
+	rm -fR $(ARTIFACT_DIR)/$(ARTIFACT_NAME)
 	(cd $(BUILD_DIR) && zip -rv $(ARTIFACT_DIR)/$(ARTIFACT_NAME) *)
 
 upload:
@@ -69,3 +70,15 @@ upload:
 
 tests: build
 	yarn run test
+
+package:
+	serverless package
+
+deploy:
+	serverless deploy
+
+deploy_function:
+	serverless deploy function --function hello
+
+logs:
+	serverless logs -t -f hello
