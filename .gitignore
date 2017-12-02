@@ -6,3 +6,4 @@ vendor
 build.js
 artifact
 .nyc_output
+.serverless

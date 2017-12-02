@@ -55,7 +55,7 @@ artifact:
 	mkdir -p $(BUILD_DIR)
 	mkdir -p $(ARTIFACT_DIR)
 	cp -fR node_modules $(BUILD_DIR)/
-	cp -fR vendor $(BUILD_DIR)/
+	# cp -fR vendor $(BUILD_DIR)/
 	cp -fR package.json $(BUILD_DIR)/
 	cp -fR yarn.lock $(BUILD_DIR)/
 	(cd $(BUILD_DIR) && yarn install --production)
@@ -81,4 +81,4 @@ deploy_function:
 	serverless deploy function --function hello
 
 logs:
-	serverless logs -t -f hello
+	serverless logs -t -f pdf
